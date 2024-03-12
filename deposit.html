@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+body {
+  color: #484848;
+  font-family: 'Lato', sans-serif;
+  padding: 1em;
+  line-height: 1.5;
+}
+
+.r1 {
+  background: #fdfdfd;
+  display: flex;
+  flex-wrap:wrap;
+  justify-content: center;
+  align-items:center;
+  margin: 0 auto;
+  border-radius:5px;
+}
+.r2 {
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+}
+h1 {
+    font-size: 3em;
+    margin: 0;
+    margin-top: 0.3em;
+}
+
+#inputs {
+    padding: 10px;
+}
+
+input,
+button {
+  font-size: .85em;
+  padding: .65em 1em;
+  border-radius: .3em;
+  outline: 0;
+}
+input {
+  border: 2px solid #dcdcdc;
+  margin-right: 1em;
+}
+
+button {
+    color: white;
+    background: #508abc;
+    border: solid 1px;
+    border-color: rgba(0, 0, 0, .1);
+    cursor: pointer;
+}
+
+label {
+    font-size: 2em;
+}
+
+#btnDeposit, #btnWithdraw {
+    width: 8em;
+}
+    </style>
+</head>
+
+<body>
+ 
+  <div class="r1">
+  <div class="r2">
+    
+    <div id="s1">
+        <h1>
+            Total Balance
+        </h1>
+        <label id="acctBalanceLbl"></label>
+    </div>
+
+    <div id="inputs">
+        <h2>
+            Deposit
+        </h2>
+        <input type="text" id="userDeposit">
+        <button id="btnDeposit">Deposit</button>
+
+        <h2>
+            Withdraw
+        </h2>
+        <input type="text" id="userWithdraw">
+        <button id="btnWithdraw">Withdraw</button>
+    </div>
+  </div>
+  </div>
+
+    <script type="text/javascript">
+        const acctBalanceLbl = document.getElementById("acctBalanceLbl");
+        const deposits = [];
+        const withdrawals = [];
+        let totalBalance = 00;
+        const userDeposit = document.getElementById("userDeposit");
+        const btnDeposit = document.getElementById("btnDeposit");
+        const userWithdraw = document.getElementById("userWithdraw");
+        const btnWithdraw = document.getElementById("btnWithdraw");
+
+        const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'INR',
+      });
+
+        btnDeposit.addEventListener('click', () => {
+
+    if (isNaN(userDeposit.value)) {
+        alert("Please enter a number.");
+        return userDeposit.value = '';
+    } else {
+
+        if (userDeposit.value < 0.01 || userDeposit.value > 10000) {
+            alert("You can only deposit between $0.01 and $10,000.")
+            return userDeposit.value = '';
+        } else {
+    
+        deposits.push(Number(userDeposit.value));
+        totalBalance += (Number(userDeposit.value));
+
+        let totalBalanceFormatted = formatter.format(totalBalance);
+        document.getElementById("acctBalanceLbl").innerHTML = totalBalanceFormatted;
+
+        console.log("$" + userDeposit.value);
+        return userDeposit.value = '';
+      }
+  }
+   });
+
+      btnWithdraw.addEventListener('click', () => {
+
+    if (isNaN(userWithdraw.value)) {
+        alert("Please enter a number.");
+        return userWithdraw.value = '';
+    } else {
+
+        if (userWithdraw.value > totalBalance - 5) {
+            alert("Your total balance cannot drop below $5.");
+            return userWithdraw.value = '';
+        } else {
+
+        withdrawals.push(Number(userWithdraw.value));
+        totalBalance -= (Number(userWithdraw.value));
+
+        let totalBalanceFormatted = formatter.format(totalBalance);
+        document.getElementById("acctBalanceLbl").innerHTML = totalBalanceFormatted;
+
+        console.log("$" + userWithdraw.value);
+        return userWithdraw.value = '';
+      }
+   }
+    });
+
+       let totalBalanceFormatted = formatter.format(totalBalance);
+       document.getElementById("acctBalanceLbl").innerHTML = totalBalanceFormatted;
+
+    </script>
+</body>
+
+</html>
